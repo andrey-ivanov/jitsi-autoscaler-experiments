@@ -11,13 +11,16 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci --only=production
 
+# Copy env
+COPY ./.env .
+
+# Copy scripts
+COPY ./scripts ./scripts
+
 # Copy built app
 COPY ./dist/. .
-
-# Copy the run script
-COPY ./build/run.sh .
 
 # Run app
 EXPOSE 8080
 ENV NODE_ENV=production
-CMD [ "./run.sh" ]
+CMD ["node", "/usr/src/app/app.js"]
